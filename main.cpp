@@ -3,6 +3,8 @@
 #include <iostream>
 #include <string>
 #include <cmath>
+#include <locale>
+
 #define UP 72
 #define DOWN 80
 #define ESC 27
@@ -12,7 +14,7 @@ using namespace std;
 
 void tabl()
 {
-    setlocale(0, "rus");
+ setlocale(LC_ALL, "RUS");
     system("cls");
     HANDLE hConsole = GetStdHandle(STD_OUTPUT_HANDLE);
     SetConsoleTextAttribute(hConsole, 2);
@@ -113,7 +115,7 @@ int uravn() {
 void obomne()
 {
     system("cls");
-    setlocale(0, "rus");
+ setlocale(LC_ALL, "RUS");
     HANDLE hConsole = GetStdHandle(STD_OUTPUT_HANDLE);
     SetConsoleTextAttribute(hConsole, 2);
     SetConsoleTextAttribute(hConsole, 2);
@@ -131,7 +133,7 @@ void obomne()
 
 void integral()
 {
-    setlocale(0, "rus");
+ setlocale(LC_ALL, "RUS");
     double a = 0, b = 2, h, s = 0, n, k, f, a2 = 0, b2 = 2, h2, x2, n2 = 1000, f2;
     std::cout<< "Введите количество прямоугольников";
     std::cin >> n;
@@ -330,7 +332,7 @@ int rgr()
 {
     SetConsoleTitle(reinterpret_cast<LPCSTR>(L"ХАИ"));
     system("CLS");
-    setlocale(0, "rus");
+ setlocale(LC_ALL, "RUS");
     ConsoleCursorVisible(false, 100);
     string Menu[] = { "Сведения об авторе","Графическая заствка", "Расчёт таблиц", "Построение графиков", "Решение уравнения", "Вычисление интеграла" };
     int active_menu = 0;
@@ -433,6 +435,6 @@ int rgr()
 
 int main()
 {
-    setlocale(0, "rus");
+ setlocale(LC_ALL, "RUS");
     rgr();
 }
