@@ -8,7 +8,29 @@
 #define ESC 27
 #define ENTER 13
 #define q 3.1415
+
 using namespace std;
+
+HANDLE hStdOut = GetStdHandle(STD_OUTPUT_HANDLE);
+
+
+void gotoxy(int x, int y)
+{
+    COORD coord;
+    coord.X = x;
+    coord.Y = y;
+    SetConsoleCursorPosition(GetStdHandle(STD_OUTPUT_HANDLE), coord);
+}
+void cursoroff()
+{
+    HANDLE handle = GetStdHandle(STD_OUTPUT_HANDLE);
+    CONSOLE_CURSOR_INFO structCursorInfo;
+    GetConsoleCursorInfo(handle, &structCursorInfo);
+    structCursorInfo.bVisible = FALSE;
+    SetConsoleCursorInfo(handle, &structCursorInfo);
+}
+
+
 
 void tabl()
 {
@@ -18,18 +40,17 @@ SetConsoleOutputCP(CP_UTF8);
     SetConsoleTextAttribute(hConsole, 2);
     printf("|Таблица\n");
 
-    int n = 20, a = -q;
+    int n = 18, a = 0, i;
     float dx, x[21], F1[20], F2[20], F1min, F1max, F2min, F2max;
-    int i;
-    dx = fabs((q - a) / (n - 1));
+    dx = 1;
     x[0] = a;
     printf("______________________________________\n");
     printf("|_i_|___x____|____F1_____|____F2_____|\n");
 
     for (i = 0; i < n; i++)
     {
-        F2[i] = fabs(sin(x[i])) + fabs(cos(x[i]));
-        F1[i] = fabs(sin(x[i])) - fabs(cos(x[i]));
+        F2[i] = pow(3,-x[i])/50;
+        F1[i] =  x[i] * exp(-x[i]) + log(x[i]);
         x[i + 1] = x[i] + dx;
     }
 
@@ -100,7 +121,7 @@ int uravn() {
 
     do {
         c = (a + b) / 2;
-        if ((2 * log(c + 1) + atan(c) - 3) * (2 * log(a + 1) + atan(a) - 3 <= 0)) b = c;
+        if (sqrt(log(pow(c, 2) + 3)) + 2*c  -3 <= 0) b = c;
         else a = c;
 
     } while (fabs(a - b) >= eps);
@@ -122,8 +143,8 @@ SetConsoleOutputCP(CP_UTF8);
     SetConsoleTextAttribute(hConsole, 2);
     printf("\t\t\tОмГТУ\t\t\n");
     printf("\t\t\tФакультет: ФИТиКС\t\t\n");
-    printf("\t\t\tГруппа:ИВТ-234 \n");
-    printf("\t\t\tНаумкин Владислав Сергеевич\n\n");
+    printf("\t\t\tГруппа:ПИН-231 \n");
+    printf("\t\t\tТищенко Тимофей Дмитриевич\n\n");
     printf("\t\t\t\x1b[32m------------------------------------------------\x1b[0m\n\n");
     SetConsoleTextAttribute(hConsole, 2);
     _getch();
@@ -133,8 +154,8 @@ void integral()
 {
 SetConsoleOutputCP(CP_UTF8);
     double a = 0, b = 2, h, s = 0, n, k, f, a2 = 0, b2 = 2, h2, x2, n2 = 1000, f2;
-    std::cout<< "Введите количество прямоугольников";
-    std::cin >> n;
+    cout<< "Введите количество прямоугольников";
+    cin >> n;
     h = (b - a) / n;
     for (double x1 = 0, x = a;x <= b;x += h)
     {
@@ -142,22 +163,22 @@ SetConsoleOutputCP(CP_UTF8);
         if (x < b)
         {
             x1 = x + h / 2;
-            f = (sqrt(x)) * sin(x);
+            f = exp(x) + exp(-x);
             s += f;
         }
     }
-    std::cout<< s * h<< " Методом прямоугольников\n";
+    cout<< s * h<< " Методом прямоугольников\n";
 
     x2 = a2;
     h2 = (b2 - a2) / n2;
 
-    f2 = h2 * ((sqrt(a2)) * sin(a2)) * ((sqrt(b2)) * sin(b2)) / 2;
+    f2 = h2 * (exp(a2) + exp(-a2)) * (exp(b2) + exp(-b2)) / 2;
     for (int i = 1; i < n; i++)
     {
         x2 = a2 + i * h2;
-        f2 += h2 * ((sqrt(x2)) * sin(x2)) * ((sqrt(x2)) * sin(x2));
+        f2 += h2 * (exp(x2) + exp(-x2)) * (exp(x2) + exp(-x2));
     }
-    std::cout<< f2<< " Методом трапеции";
+    cout<< f2<< " Методом трапеции";
 
 }
 
@@ -168,25 +189,25 @@ void graphs()
     HDC screen = GetDC(GetConsoleWindow());
     HPEN pen_white = CreatePen(PS_DASH, 2, RGB(255, 255, 255));
     HPEN pen = CreatePen(PS_DASH, 2, RGB(80, 170, 220));
-    HPEN pen2 = CreatePen(PS_DASH, 2, RGB(255, 0, 0));
+    HPEN pen2 = CreatePen(PS_DASH, 2, RGB(200,120, 0));
     SelectObject(screen, pen_white);
-    const int zero_x = 550;
-    const int zero_y = 300;
-// Ось Х
+    const int zero_x = 530;
+    const int zero_y = 280;
+// ОХ
     MoveToEx(screen, zero_x - 400, zero_y, NULL);
     LineTo(screen, zero_x + 400, zero_y);
-// Ось У
+// ОУ
     MoveToEx(screen, zero_x, zero_y - 250, NULL);
     LineTo(screen, zero_x, zero_y + 250);
 // Стрелочка у оси Х
     MoveToEx(screen, zero_x + 400 - 25, zero_y + 10, NULL);
     LineTo(screen, zero_x + 400, zero_y);
     LineTo(screen, zero_x + 400 - 25, zero_y - 10);
-// Стрелочка у оси У
+//..
     MoveToEx(screen, zero_x + 10, zero_y - 250 + 25, NULL);
     LineTo(screen, zero_x, zero_y - 250);
     LineTo(screen, zero_x - 10, zero_y - 250 + 25);
-// Палочки
+// Единичные отрезки
     for (int i = -380; i <= 360; i += 20)
     {
         MoveToEx(screen, zero_x + i, zero_y - 5, NULL);
@@ -197,7 +218,7 @@ void graphs()
         MoveToEx(screen, zero_x - 5, zero_y + i, NULL);
         LineTo(screen, zero_x + 5, zero_y + i);
     }
-// Подпись осей и начала координат
+// Оси
     SetBkMode(screen, TRANSPARENT);
     SetTextColor(screen, RGB(255, 255, 255));
     TextOut(screen, zero_x + 15, zero_y - 240, reinterpret_cast<LPCSTR>(L"Y"), 1);
@@ -205,30 +226,29 @@ void graphs()
     TextOut(screen, zero_x - 12, zero_y + 2, reinterpret_cast<LPCSTR>(L"0"), 1);
     TextOut(screen, zero_x + 15, zero_y + 10, reinterpret_cast<LPCSTR>(L"1"), 1);
     TextOut(screen, zero_x - 15, zero_y - 27, reinterpret_cast<LPCSTR>(L"1"), 1);
-// Подпись кривой функции
+// Названия графиков функции
     SetTextColor(screen, RGB(80, 170, 220));
-    TextOut(screen, zero_x - 300, zero_y - 150, reinterpret_cast<LPCSTR>(L"y = (|sinx| + |cosx|)"), 25);
-    SetTextColor(screen, RGB(255, 0, 0));
-    TextOut(screen, zero_x - 300, zero_y - 200, reinterpret_cast<LPCSTR>(L"y = (|sin x| - |cos x|)"), 25);
-// Cам график
+    TextOut(screen, zero_x - 300, zero_y - 150, reinterpret_cast<LPCSTR>(L"y = (3^-x)/50"), 30);
+    SetTextColor(screen, RGB(200,120, 0));
+    TextOut(screen, zero_x - 300, zero_y - 200, reinterpret_cast<LPCSTR>(L"y = x * e^-x + ln(x)"), 40);
+// функция 1
     SelectObject(screen, pen);
     int i = 1;
-    for (double x = 0.01; x <= 10.0; x += 0.01)
+    for (double x = 0.01; x <= 8.50; x += 0.01)
     {
-        MoveToEx(screen, 12 * x + zero_x, -12 * (fabs(sin(x)) + fabs(cos(x))) + zero_y, NULL);
-        LineTo(screen, 12 * (x + 0.1) + zero_x, -12 *(fabs(sin(x+0.1)) + fabs(cos(x+0.1))) +
-                                                zero_y);
+        MoveToEx(screen, 12 * x + zero_x, -12 * (pow(3,-x)/50) + zero_y, NULL);
+        LineTo(screen, 12 * (x + 0.1) + zero_x, -12 *(pow(3,-x + 0.1)/50) + zero_y);
         i++;
         if (i % 12 == 0)
             Sleep(1);
     }
     i = 1;
+    //функция 2
     SelectObject(screen, pen2);
-    for (double x = 0.01; x <= 10.0; x += 0.01)
+    for (double x = 0.01; x <= 8.50; x += 0.01)
     {
-        MoveToEx(screen, 12 * x + zero_x, -12 * ( fabs(sin(x)) - fabs(cos(x)) ) + zero_y,
-                 NULL);
-        LineTo(screen, 12 * (x + 0.1) + zero_x, -12 * (fabs(sin(x+0.1)) - fabs(cos(x+0.1))) + zero_y);
+        MoveToEx(screen, 12 * x + zero_x, -12 * ( x * exp(-x) + log(x)) + zero_y, NULL);
+        LineTo(screen, 12 * (x + 0.1) + zero_x, -12 * ( (x + 0.1) * exp(-x + 0.1) + log(x + 0.1))  + zero_y);
         i++;
         if (i % 12 == 0)
             Sleep(1);
@@ -252,88 +272,90 @@ void graphs()
 
 }
 
+
 int animation()
 {
-    HANDLE hStdout = GetStdHandle(STD_OUTPUT_HANDLE);
-
-    SetConsoleTextAttribute(hStdout, BACKGROUND_RED + //голубой цвет фона
-                                     BACKGROUND_INTENSITY + //увеличиваем яркость фона
-                                     //смешиваем цвета RGB для получения бего цвета
-                                     FOREGROUND_INTENSITY + //увеличение яркости цвета
-                                     FOREGROUND_RED + //смешиваем цвета RGB для получения бего цвета
-                                     FOREGROUND_GREEN); //смешиваем цвета RGB для получения бего цвета
-
-    const char heart = 3;
-
+    cursoroff();
+        HANDLE hStdout = GetStdHandle(STD_OUTPUT_HANDLE);
+    //смешиваем цвета RGB для получения бего цвета
+    SetConsoleTextAttribute(hStdout,FOREGROUND_INTENSITY +FOREGROUND_RED + FOREGROUND_GREEN);
     CONSOLE_SCREEN_BUFFER_INFO csbi;
     GetConsoleScreenBufferInfo(hStdout, &csbi);
 
-    const int WindowWidth = csbi.srWindow.Right - csbi.srWindow.Left + 1;
-    const int WindowHeight = csbi.srWindow.Bottom - csbi.srWindow.Top + 1;
+    const int M = csbi.srWindow.Right - csbi.srWindow.Left ;
+    const int N = csbi.srWindow.Bottom - csbi.srWindow.Top ;
+    const int n = 80;
 
-    for (int i = 0; i < WindowWidth * WindowHeight; i++)
-        cout<< " ";
-
-    COORD orig = { 0, 0 };
-
-    SetConsoleCursorPosition(hStdout, orig);
-    COORD snowflake[1000];
-
-    for (int i = 0; i < WindowWidth; i++)
-    {
-        snowflake[i].X = i;
-        snowflake[i].Y = rand() % WindowHeight;
+    int y[n], x[n], sy[M];
+    bool poi = 0, stopFlag = true;
+    for (int s = 0; s < n; s++) {
+        y[s] = rand() % N;
+        x[s] = rand() % M;
     }
-    bool t = TRUE;
-    while (t)
+    sy[0] = N-3;
+    for (int s = 1; s < M; s++) {
+        sy[s] = N;
+    }
+
+    while(stopFlag)
     {
-        for (int i = 0; i < WindowWidth; i++)
+        //отчистка
+        gotoxy(0,0);
+
+        //отрисовка
+        for (int i = 0; i < N; i++, printf("\n"))
+            for (int j = 0; j < M; j++) {
+                poi = false;
+                for (int s = 0; s < n; s++)
+                    if ((i == y[s] && j == x[s]) || (i >= sy[j]))
+                        poi = true;
+                if (poi)
+                    printf("*");
+                else
+                    printf(" ");
+
+            }
+        if (_kbhit())
         {
-            SetConsoleCursorPosition(hStdout, snowflake[i]);
-            cout<< ' ';
-
-            snowflake[i].Y++;
-
-            if (snowflake[i].Y == WindowHeight)
-                snowflake[i].Y = 0;
-
-            SetConsoleCursorPosition(hStdout, snowflake[i]);
-            cout<< heart;
+            char key = _getch();
+            if (key == ESC)
+            {
+                stopFlag = false;
+            }
         }
 
-        SetConsoleCursorPosition(hStdout, orig);
-        if (_getch())
-            t = FALSE;
-        Sleep(200);
+        for (int s = 0; s < n; s++) {
+            for (int j = 0; j < M; j++)
+                if (y[s] == N && x[s] == j) {
+                    if (sy[j - 1] > sy[j])
+                        sy[j - 1]--;
+                    else
+                    if (sy[j + 1] > sy[j])
+                        sy[j+1]--;
+                    else
+                        sy[j]--;
+                }
+            if (y[s] == N)
+                y[s] = 0;
+            else
+                y[s] += 1;
+            x[s] += rand() % 3 - 1;
+        }
 
+        Sleep(20);
     }
 
     return 0;
 }
 
-HANDLE hStdOut = GetStdHandle(STD_OUTPUT_HANDLE);
 
-// Текстовый курсор в точку x,y
-void GoToXY(short x, short y)
-{
-    SetConsoleCursorPosition(hStdOut, { x, y });
-}
-
-void ConsoleCursorVisible(bool show, short size)
-{
-    CONSOLE_CURSOR_INFO structCursorInfo;
-    GetConsoleCursorInfo(hStdOut, &structCursorInfo);
-    structCursorInfo.bVisible = show;
-    structCursorInfo.dwSize = size;
-    SetConsoleCursorInfo(hStdOut, &structCursorInfo);
-}
 
 int rgr()
 {
     SetConsoleTitle(reinterpret_cast<LPCSTR>(L"ХАИ"));
     system("CLS");
 SetConsoleOutputCP(CP_UTF8);
-    ConsoleCursorVisible(false, 100);
+    cursoroff(); 
     string Menu[] = { "Сведения об авторе","Графическая заствка", "Расчёт таблиц", "Построение графиков", "Решение уравнения", "Вычисление интеграла" };
     int active_menu = 0;
 
@@ -341,14 +363,14 @@ SetConsoleOutputCP(CP_UTF8);
     while (true)
     {
         int x = 40, y = 12;
-        GoToXY(x, y);
+        gotoxy(x, y);
         for (int i = 0; i < size(Menu); i++)
         {
             if (i == active_menu)
                 SetConsoleTextAttribute(hStdOut, FOREGROUND_RED | FOREGROUND_INTENSITY);
 
             else SetConsoleTextAttribute(hStdOut, FOREGROUND_RED);
-            GoToXY(x, y++);
+            gotoxy(x, y++);
             cout<< Menu[i]<< endl;
         }
         ch = _getch();
@@ -357,6 +379,8 @@ SetConsoleOutputCP(CP_UTF8);
         {
             case ESC:
                 exit(0);
+
+
             case UP:
                 if (active_menu > 0)
                 --active_menu;
@@ -369,7 +393,7 @@ SetConsoleOutputCP(CP_UTF8);
             case ENTER:
                 switch (active_menu)
                 {
-                    case 0: obomne();GoToXY(x, y);
+                    case 0: obomne();gotoxy(x, y);
                         SetConsoleTextAttribute(hStdOut, FOREGROUND_RED | FOREGROUND_GREEN |
 
                                                          FOREGROUND_INTENSITY);
@@ -381,7 +405,7 @@ SetConsoleOutputCP(CP_UTF8);
                         system("CLS");
                         break;
 
-                    case 2:tabl(); GoToXY(x, y);
+                    case 2:tabl(); gotoxy(x, y);
                         SetConsoleTextAttribute(hStdOut, FOREGROUND_RED | FOREGROUND_GREEN |
 
                                                          FOREGROUND_INTENSITY);
@@ -391,7 +415,7 @@ SetConsoleOutputCP(CP_UTF8);
                         break;
 
                     case 3: graphs();
-                        GoToXY(x, y);
+                        gotoxy(x, y);
                         SetConsoleTextAttribute(hStdOut, FOREGROUND_RED | FOREGROUND_GREEN |
 
                                                          FOREGROUND_INTENSITY);
@@ -400,7 +424,7 @@ SetConsoleOutputCP(CP_UTF8);
                         system("CLS");
                         break;
 
-                    case 4:uravn(); GoToXY(x, y);
+                    case 4:uravn(); gotoxy(x, y);
                         SetConsoleTextAttribute(hStdOut, FOREGROUND_RED | FOREGROUND_GREEN |
 
                                                          FOREGROUND_INTENSITY);
@@ -411,7 +435,7 @@ SetConsoleOutputCP(CP_UTF8);
 
                     case 5: integral();
 
-                        GoToXY(x, y);
+                        gotoxy(x, y);
                         SetConsoleTextAttribute(hStdOut, FOREGROUND_RED | FOREGROUND_GREEN |
 
                                                          FOREGROUND_INTENSITY);
@@ -429,12 +453,16 @@ SetConsoleOutputCP(CP_UTF8);
                 cout<< "Код"<< (int)ch<< endl;
 
         }
+
     }
+
 //_getch();
 }
 
 int main()
 {
-SetConsoleOutputCP(CP_UTF8);
+    SetConsoleOutputCP(CP_UTF8);
     rgr();
+
 }
+
