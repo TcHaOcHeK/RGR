@@ -169,16 +169,16 @@ SetConsoleOutputCP(CP_UTF8);
     }
     cout<< s * h<< " Методом прямоугольников\n";
 
-    x2 = a2;
-    h2 = (b2 - a2) / n2;
-
-    f2 = h2 * (exp(a2) + exp(-a2)) * (exp(b2) + exp(-b2)) / 2;
-    for (int i = 1; i < n; i++)
-    {
-        x2 = a2 + i * h2;
-        f2 += h2 * (exp(x2) + exp(-x2)) * (exp(x2) + exp(-x2));
-    }
-    cout<< f2<< " Методом трапеции";
+//    x2 = a2;
+//    h2 = (b2 - a2) / n2;
+//
+//    f2 = h2 * (exp(a2) + exp(-a2)) * (exp(b2) + exp(-b2)) / 2;
+//    for (int i = 1; i < n; i++)
+//    {
+//        x2 = a2 + i * h2;
+//        f2 += h2 * ((sqrt(x2)) * sin(x2)) * ((sqrt(x2)) * sin(x2));
+//    }
+//    cout<< f2<< " Методом трапеции";
 
 }
 
@@ -356,7 +356,7 @@ int rgr()
     system("CLS");
 SetConsoleOutputCP(CP_UTF8);
     cursoroff(); 
-    string Menu[] = { "Сведения об авторе","Графическая заствка", "Расчёт таблиц", "Построение графиков", "Решение уравнения", "Вычисление интеграла" };
+    string Menu[] = { "Сведения об авторе","Графическая заствка", "Расчёт таблиц", "Построение графиков", "Решение уравнения", "Вычисление интеграла", "Выйти" };
     int active_menu = 0;
 
     char ch;
@@ -366,10 +366,10 @@ SetConsoleOutputCP(CP_UTF8);
         gotoxy(x, y);
         for (int i = 0; i < size(Menu); i++)
         {
-            if (i == active_menu)
-                SetConsoleTextAttribute(hStdOut, FOREGROUND_RED | FOREGROUND_INTENSITY);
+            if (i == active_menu % size(Menu))
+                SetConsoleTextAttribute(hStdOut, FOREGROUND_GREEN | FOREGROUND_INTENSITY);
 
-            else SetConsoleTextAttribute(hStdOut, FOREGROUND_RED);
+            else SetConsoleTextAttribute(hStdOut, FOREGROUND_GREEN);
             gotoxy(x, y++);
             cout<< Menu[i]<< endl;
         }
@@ -382,16 +382,14 @@ SetConsoleOutputCP(CP_UTF8);
 
 
             case UP:
-                if (active_menu > 0)
                 --active_menu;
                 break;
             case DOWN:
-                if (active_menu < size(Menu) - 1)
                     ++active_menu;
                 break;
 
             case ENTER:
-                switch (active_menu)
+                switch (active_menu % size(Menu))
                 {
                     case 0: obomne();gotoxy(x, y);
                         SetConsoleTextAttribute(hStdOut, FOREGROUND_RED | FOREGROUND_GREEN |
