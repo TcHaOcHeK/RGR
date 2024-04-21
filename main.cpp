@@ -40,17 +40,17 @@ SetConsoleOutputCP(CP_UTF8);
     SetConsoleTextAttribute(hConsole, 2);
     printf("|Таблица\n");
 
-    int n = 18, a = 0, i;
-    float dx, x[21], F1[20], F2[20], F1min, F1max, F2min, F2max;
-    dx = 1;
+    int a = 0, i;
+    float n = 18.0, dx, x[19], F1[19], F2[219], F1min, F1max, F2min, F2max;
+    dx = fabs((5 - a) / (n - 1));
     x[0] = a;
     printf("______________________________________\n");
     printf("|_i_|___x____|____F1_____|____F2_____|\n");
 
     for (i = 0; i < n; i++)
     {
-        F2[i] = pow(3,-x[i])/50;
-        F1[i] =  x[i] * exp(-x[i]) + log(x[i]);
+        F1[i] = pow(3,-x[i])/50;
+        F2[i] =  x[i] * exp(-x[i]) + log(x[i]);
         x[i + 1] = x[i] + dx;
     }
 
@@ -121,7 +121,7 @@ int uravn() {
 
     do {
         c = (a + b) / 2;
-        if (sqrt(log(pow(c, 2) + 3)) + 2*c  -3 <= 0) b = c;
+        if (sqrt(log(pow(c, 2) + 3)) + 2*c  - 3 <= 0) b = c;
         else a = c;
 
     } while (fabs(a - b) >= eps);
@@ -169,16 +169,25 @@ SetConsoleOutputCP(CP_UTF8);
     }
     cout<< s * h<< " Методом прямоугольников\n";
 
-//    x2 = a2;
-//    h2 = (b2 - a2) / n2;
-//
-//    f2 = h2 * (exp(a2) + exp(-a2)) * (exp(b2) + exp(-b2)) / 2;
-//    for (int i = 1; i < n; i++)
-//    {
-//        x2 = a2 + i * h2;
-//        f2 += h2 * ((sqrt(x2)) * sin(x2)) * ((sqrt(x2)) * sin(x2));
-//    }
-//    cout<< f2<< " Методом трапеции";
+    x2 = a2;
+    h2 = (b2 - a2) / n2;
+
+    f2 = (exp(a2) + exp(-a2) + exp(b2) + exp(-b2)) / 2.0;
+
+    for (int i = 1; i < n2; i++) {
+        x2 = a2 + i * h2;
+        f2 += exp(x2) + exp(-x2);
+    }
+    cout<< f2 * h2 << " Методом трапеции\n";
+
+
+    h2 = (b2 - a2) / n2;
+    double f3 = (exp(a2) + exp(-a2) + exp(b2) + exp(-b2));
+    for (int i = 1; i < n2; i++) {
+        double x2 = a2 + i * h2;
+        f3 += (i % 2 == 0) ? 2 * (exp(x2) + exp(-x2)) : 4 * (exp(x2) + exp(-x2));
+    }
+    cout<< f3 * h2 / 3.0 << " Методом Симпсона\n";
 
 }
 
