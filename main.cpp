@@ -121,7 +121,8 @@ int uravn() {
 
     do {
         c = (a + b) / 2;
-        if (sqrt(log(pow(c, 2) + 3)) + 2*c  - 3 <= 0) b = c;
+        if (sqrt(log(pow(c, 2) + 3)) + 2*c  - 3 <= 0)
+            b = c;
         else a = c;
 
     } while (fabs(a - b) >= eps);
@@ -180,8 +181,6 @@ SetConsoleOutputCP(CP_UTF8);
     }
     cout<< f2 * h2 << " Методом трапеции\n";
 
-
-    h2 = (b2 - a2) / n2;
     double f3 = (exp(a2) + exp(-a2) + exp(b2) + exp(-b2));
     for (int i = 1; i < n2; i++) {
         double x2 = a2 + i * h2;
@@ -365,7 +364,7 @@ int rgr()
     system("CLS");
 SetConsoleOutputCP(CP_UTF8);
     cursoroff(); 
-    string Menu[] = { "Сведения об авторе","Графическая заствка", "Расчёт таблиц", "Построение графиков", "Решение уравнения", "Вычисление интеграла", "Выйти" };
+    string Menu[] = { "Сведения об авторе","Графическая заставка", "Расчёт таблиц", "Построение графиков", "Решение уравнения", "Вычисление интеграла", "Выйти" };
     int active_menu = 0;
 
     char ch;
